@@ -28,6 +28,12 @@ export default function Todo() {
         />
         <button>Add To Do</button>
       </form>
+      <hr />
+      <ul>
+        {todos.map((item, i) => (
+          <li key={i}>{item}</li>
+        ))}
+      </ul>
     </>
   );
 }
