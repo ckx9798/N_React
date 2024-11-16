@@ -1,17 +1,16 @@
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./Project-movie/routes/Home";
+import Movie from "./Project-movie/routes/Movie";
 
 function App() {
-  let count = 0;
-  const countUp = () => {
-    count = count + 1;
-    console.log(count);
-  };
-
   return (
-    <div>
-      <h3>Total Count : {count}</h3>
-      <button onClick={countUp}> Click </button>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/movies/:id" element={<Movie />} />
+      </Routes>
+    </Router>
   );
 }
 
