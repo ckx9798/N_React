@@ -1,0 +1,21 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 200px;
+}
+
+.M__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 700px;
+  width: 500px;
+  background-color: antiquewhite;
+  padding: ;
+}
+
+.summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
