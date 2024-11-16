@@ -7,8 +7,11 @@ export default function MovieList({ id, title, summary, coverImg, genres }) {
       <h2>
         <Link to={`/movies/${id}`}>{title}</Link>
       </h2>
-      <p className={styles.summary}>{summary}</p>
       <img src={coverImg} />
+
+      <p className={styles.summary}>
+        {summary.length > 235 ? `${summary.slice(0, 235)}...` : summary}
+      </p>
       <ul>
         {genres.map((g) => (
           <li key={g}>{g}</li>

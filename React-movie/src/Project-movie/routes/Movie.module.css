@@ -1,18 +1,21 @@
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   padding: 200px;
 }
 
 .M__container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
-  height: 700px;
+  height: auto;
   width: 500px;
   background-color: antiquewhite;
-  padding: ;
+  padding: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
 }
 
 .summary {
