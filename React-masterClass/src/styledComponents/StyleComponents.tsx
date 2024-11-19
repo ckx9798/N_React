@@ -24,6 +24,13 @@ const Text = styled.div`
   color: white;
 `;
 
+const Btn = styled.button`
+  color: white;
+  background-color: tomato;
+  border: 0;
+  border-radius: 15px;
+`;
+
 export default function StyleComponents() {
   return (
     <Father>
