@@ -15,6 +15,31 @@ const rotationAnimation = keyframes`
     }
 `;
 
+// const Box = styled.div`
+//   width: 200px;
+//   height: 200px;
+//   background-color: tomato;
+//   animation: ${rotationAnimation} 1s linear infinite;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   span {
+//     font-size: 36px;
+//     &:hover {
+//       font-size: 50px;
+//     }
+//     &:active {
+//       opacity: 0%;
+//     }
+//   }
+//`;
+
+
+const Emoji = styled.span`
+  font-size: 36px;
+`;
+
+
 const Box = styled.div`
   width: 200px;
   height: 200px;
@@ -35,11 +60,13 @@ const Box = styled.div`
 `;
 
 export default function AnimationBox() {
-  return (
-    <div>
-      <Box>
-        <span>😢</span>
-      </Box>
-    </div>
-  );
-}
+    return (
+      <div>
+        <Box>
+          <Emoji>😢</Emoji>   📌 적용
+        </Box>
+        
+          <Emoji>🔥</Emoji>   📌 미적용
+      </div>
+    );
+  }
