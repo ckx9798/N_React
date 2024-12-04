@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 interface RouteParams {
@@ -39,40 +39,92 @@ const Coinbox = styled.li`
     }
   }
 `;
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+
+const Tab = styled.span`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 7px 0px;
+  border-radius: 10px;
+  color: ${(props) => props.theme.textColor};
+  a {
+    display: block;
+  }
+`;
 const Loading = styled.div`
   text-align: center;
 `;
+const Imgtag = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  border-radius: 16px;
+`;
 export default function Coin() {
-  const [loading, setLoading] = useState(true);
   const { state } = useLocation();
   const { coinId } = useParams();
   const [infoData, setInfoData] = useState({});
   const [priceData, setPriceData] = useState({});
 
-  // console.log(state);
+  const [coins, setCoins] = useState<CoinInterface[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const response1 = await fetch(
-        `https://api.coinpaprika.com/v1/coins/${coinId}`
+      const response = await fetch(
+        "https://fandom-k-api.vercel.app/9-2/idols?pageSize=10"
       );
-      const infoData = response1.json();
-      const response2 = await fetch(
-        `https://api.coinpaprika.com/v1/tickers/${coinId}`
-      );
-      const priceData = response2.json();
-      setInfoData(infoData);
-      setPriceData(priceData);
+      const data = await response.json();
+      setCoins(data);
+      setLoading(false);
     })();
-  });
+  }, []);
+console.log(coins)
+  // useEffect(() => {
+  //   (async () => {
+  //     const response1 = await fetch(
+  //       `https://api.coinpaprika.com/v1/coins/${coinId}`
+  //     );
+  //     const infoData = response1.json();
+  //     const response2 = await fetch(
+  //       `https://api.coinpaprika.com/v1/tickers/${coinId}`
+  //     );
+  //     const priceData = response2.json();
+  //     setInfoData(infoData);
+  //     setPriceData(priceData);
+  //   })();
+  // });
+  const selectedCoin = coins.find((coin) => coin.id === Number(coinId));
 
   return (
     <Container>
       <Header>
-        <Title>{state?.id || "Loading..."}</Title>
+        <Title>{selectedCoin?.name || "Loading..."}</Title>
       </Header>
-      {loading ? "Loading..." : null}
+      {!loading && selectedCoin && (
+        <Overview>
+          <Imgtag src={selectedCoin.profilePicture} />
+          {selectedCoin.name} / {selectedCoin.gender} / {selectedCoin.group} / {selectedCoin.totalVotes}
+        </Overview>
+      )}
+      <Overview>
+        <Tab>
+          <Link to="chart">Chart</Link>
+        </Tab>
+        <Tab>
+          <Link to="price">Price</Link>
+        </Tab>
+      </Overview>
+      {loading ? <Loading>Loading...</Loading> : <Outlet />}
     </Container>
   );
 }
-(1,2,23,,4,5,65,6,6,7,7,8)
