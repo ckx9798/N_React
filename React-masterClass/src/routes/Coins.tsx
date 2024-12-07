@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { data, Link } from "react-router-dom";
 import styled from "styled-components";
 import { coinData } from "./mockData";
+import { useQuery } from "react-query";
+import { fetchCoin } from "./api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -60,30 +62,19 @@ interface CoinInterface {
 }
 
 export default function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoin);
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(
-        "https://fandom-k-api.vercel.app/9-2/idols?pageSize=10"
-      );
-      const data = await response.json();
-      setCoins(data.list);
-      setLoading(false);
-    })();
-  }, []);
-  console.log(coins);
+  console.log(data);
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Loading>Loading...</Loading>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={`/${coin.id}`}
@@ -104,3 +95,19 @@ export default function Coins() {
     </Container>
   );
 }
+
+useEffect(() => {
+  (async () => {
+    const response = await fetch("");
+    const data = response.json();
+    console.log(data);
+  })();
+}, []);
+
+useEffect(() => {
+  (async () => {
+    const response = await axios.get("");
+    console.log(data);
+    set;
+  })();
+}, []);

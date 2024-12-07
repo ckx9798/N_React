@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { data, Link, Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { fetchAd, fetchChart } from "./api";
 
 interface RouteParams {
   coinId: string;
@@ -63,68 +65,38 @@ const Tab = styled.span`
 const Loading = styled.div`
   text-align: center;
 `;
-const Imgtag = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-right: 10px;
-  border-radius: 16px;
-`;
 export default function Coin() {
   const { state } = useLocation();
   const { coinId } = useParams();
-  const [infoData, setInfoData] = useState({});
-  const [priceData, setPriceData] = useState({});
 
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(
-        "https://fandom-k-api.vercel.app/9-2/idols?pageSize=10"
-      );
-      const data = await response.json();
-      setCoins(data);
-      setLoading(false);
-    })();
-  }, []);
-console.log(coins)
-  // useEffect(() => {
-  //   (async () => {
-  //     const response1 = await fetch(
-  //       `https://api.coinpaprika.com/v1/coins/${coinId}`
-  //     );
-  //     const infoData = response1.json();
-  //     const response2 = await fetch(
-  //       `https://api.coinpaprika.com/v1/tickers/${coinId}`
-  //     );
-  //     const priceData = response2.json();
-  //     setInfoData(infoData);
-  //     setPriceData(priceData);
-  //   })();
-  // });
-  const selectedCoin = coins.find((coin) => coin.id === Number(coinId));
-
-  return (
-    <Container>
-      <Header>
-        <Title>{selectedCoin?.name || "Loading..."}</Title>
-      </Header>
-      {!loading && selectedCoin && (
+const {isLoading: adLoading, data: adData} = useQuery(["ad", coinId], fetchAd)
+const {isLoading: chartLoading, data: chartData} = useQuery(["chart", coinId], fetchChart)
+console.log(adData)
+console.log(1)
+console.log(chartData)
+const thisIdol = adData?.find((item) => item.idolId === Number(coinId));
+return (
+  <Container>
+    <Header>
+      <Title>{state?.name || thisIdol.idol.name || "Loading..."}</Title>
+    </Header>
+    {thisIdol ? (
+      <>
+        <Overview>{thisIdol.title}</Overview>
+        <Overview>{thisIdol.subtitle}</Overview>
+        <Overview>{thisIdol.idol.gender}</Overview>
+        
         <Overview>
-          <Imgtag src={selectedCoin.profilePicture} />
-          {selectedCoin.name} / {selectedCoin.gender} / {selectedCoin.group} / {selectedCoin.totalVotes}
+          <Tab>
+            <Link to={`chart`}>Chart</Link>
+          </Tab>
+          <Tab>
+            <Link to={`price`}>AD</Link>
+          </Tab>
         </Overview>
-      )}
-      <Overview>
-        <Tab>
-          <Link to="chart">Chart</Link>
-        </Tab>
-        <Tab>
-          <Link to="price">Price</Link>
-        </Tab>
-      </Overview>
-      {loading ? <Loading>Loading...</Loading> : <Outlet />}
-    </Container>
-  );
+        <Outlet context={{ thisIdol, adLoading }} />
+      </>
+    ) : null}
+  </Container>
+);
 }
