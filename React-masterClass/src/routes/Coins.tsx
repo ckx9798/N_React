@@ -45,8 +45,8 @@ const Loading = styled.div`
   text-align: center;
 `;
 const Imgtag = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 185px;
+  height: 200px;
   margin-right: 10px;
   border-radius: 16px;
 `;
@@ -95,19 +95,3 @@ export default function Coins() {
     </Container>
   );
 }
-
-useEffect(() => {
-  (async () => {
-    const response = await fetch("");
-    const data = response.json();
-    console.log(data);
-  })();
-}, []);
-
-useEffect(() => {
-  (async () => {
-    const response = await axios.get("");
-    console.log(data);
-    set;
-  })();
-}, []);

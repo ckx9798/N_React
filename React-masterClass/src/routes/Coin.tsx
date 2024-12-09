@@ -69,34 +69,40 @@ export default function Coin() {
   const { state } = useLocation();
   const { coinId } = useParams();
 
-const {isLoading: adLoading, data: adData} = useQuery(["ad", coinId], fetchAd)
-const {isLoading: chartLoading, data: chartData} = useQuery(["chart", coinId], fetchChart)
-console.log(adData)
-console.log(1)
-console.log(chartData)
-const thisIdol = adData?.find((item) => item.idolId === Number(coinId));
-return (
-  <Container>
-    <Header>
-      <Title>{state?.name || thisIdol.idol.name || "Loading..."}</Title>
-    </Header>
-    {thisIdol ? (
-      <>
-        <Overview>{thisIdol.title}</Overview>
-        <Overview>{thisIdol.subtitle}</Overview>
-        <Overview>{thisIdol.idol.gender}</Overview>
-        
-        <Overview>
-          <Tab>
-            <Link to={`chart`}>Chart</Link>
-          </Tab>
-          <Tab>
-            <Link to={`price`}>AD</Link>
-          </Tab>
-        </Overview>
-        <Outlet context={{ thisIdol, adLoading }} />
-      </>
-    ) : null}
-  </Container>
-);
+  const { isLoading: adLoading, data: adData } = useQuery(
+    ["ad", coinId],
+    fetchAd
+  );
+  const { isLoading: chartLoading, data: chartData } = useQuery(
+    ["chart", coinId],
+    fetchChart
+  );
+  console.log(adData);
+  console.log(1);
+  console.log(chartData);
+  const thisIdol = adData?.find((item) => item.idolId === Number(coinId));
+  return (
+    <Container>
+      <Header>
+        <Title>{state?.name || thisIdol.idol.name || "Loading..."}</Title>
+      </Header>
+      {thisIdol ? (
+        <>
+          <Overview>{thisIdol.title}</Overview>
+          <Overview>{thisIdol.subtitle}</Overview>
+          <Overview>{thisIdol.idol.gender}</Overview>
+
+          <Overview>
+            <Tab>
+              <Link to={`chart`}>Chart</Link>
+            </Tab>
+            <Tab>
+              <Link to={`price`}>AD</Link>
+            </Tab>
+          </Overview>
+          <Outlet context={{ thisIdol, adLoading }} />
+        </>
+      ) : null}
+    </Container>
+  );
 }
