@@ -26,7 +26,7 @@ const Title = styled.h1`
 const CoinsList = styled.ul``;
 const Coinbox = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.cardBgColor};
   border-radius: 15px;
   margin-bottom: 10px;
 

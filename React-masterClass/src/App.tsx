@@ -1,6 +1,11 @@
-import Router from "./routes/Router"; 
-import { createGlobalStyle } from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools"
+import Router from "./routes/Router";
+import {
+  createGlobalStyle,
+  DefaultTheme,
+  ThemeProvider,
+} from "styled-components";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { useState } from "react";
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -59,17 +64,36 @@ table {
   }
   body {
     font-family: 'Parkinsans', 'Roboto', sans-serif;
-    background-color: ${props => props.theme.bgColor};
-    color: ${props => props.theme.textColor};
+    background-color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.textColor};
   }
 `;
 
+export const darkTheme: DefaultTheme = {
+  bgColor: "#2f3640",
+  textColor: "white",
+  accentColor: "#9c88ff",
+  cardBgColor: "#353b48",
+};
+export const lightTheme: DefaultTheme = {
+  bgColor: "whitesmoke",
+  textColor: "black",
+  accentColor: "#9c88ff",
+  cardBgColor: "white",
+};
+
 function App() {
+  const [mode, setMode] = useState(false);
+  const toggleDark = () => setMode((current) => !current);
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools/>
+      {/* <ThemeProvider theme={darkTheme}> */}
+      <ThemeProvider theme={mode ? lightTheme : darkTheme}>
+        <button onClick={toggleDark}>💡 mode change</button>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools />
+      </ThemeProvider>
     </>
   );
 }
