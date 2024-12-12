@@ -1,13 +1,8 @@
-import Router from "./routes/Router";
-import {
-  createGlobalStyle,
-  DefaultTheme,
-  ThemeProvider,
-} from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { modeAtom } from "./routes/atom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Router } from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
+import ToDoList from "./routes/ToDoList";
+
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -71,32 +66,15 @@ table {
   }
 `;
 
-export const darkTheme: DefaultTheme = {
-  bgColor: "#2f3640",
-  textColor: "white",
-  accentColor: "#9c88ff",
-  cardBgColor: "#353b48",
-};
-export const lightTheme: DefaultTheme = {
-  bgColor: "whitesmoke",
-  textColor: "black",
-  accentColor: "#9c88ff",
-  cardBgColor: "white",
-};
-
 function App() {
-  const mode = useRecoilValue(modeAtom);
   return (
     <>
-      {/* <ThemeProvider theme={darkTheme}> */}
-      <ThemeProvider theme={mode ? lightTheme : darkTheme}>
-        {/* 해당 버튼을 coins 로 위치 변경 */}
-        {/* <button onClick={toggleDark}>💡 mode change</button> */}
-        <GlobalStyle />
-        {/* 프롭드릴링 시작점 */}
-        <Router />
-        <ReactQueryDevtools />
-      </ThemeProvider>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ToDoList />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
