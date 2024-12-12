@@ -62,7 +62,11 @@ interface CoinInterface {
   teamId: number;
 }
 
-export default function Coins() {
+interface ICoinsProps {
+  toggleDark: () => void;
+}
+
+export default function Coins({ toggleDark }: ICoinsProps) {
   const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoin);
 
   console.log(data);
@@ -70,6 +74,7 @@ export default function Coins() {
     <Container>
       <Header>
         <Title>Coins</Title>
+        <button onClick={toggleDark}>💡 mode change</button>
       </Header>
       {isLoading ? (
         <Loading>Loading...</Loading>

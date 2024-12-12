@@ -89,9 +89,11 @@ function App() {
     <>
       {/* <ThemeProvider theme={darkTheme}> */}
       <ThemeProvider theme={mode ? lightTheme : darkTheme}>
-        <button onClick={toggleDark}>💡 mode change</button>
+        {/* 해당 버튼을 coins 로 위치 변경 */}
+        {/* <button onClick={toggleDark}>💡 mode change</button> */}
         <GlobalStyle />
-        <Router />
+        {/* 프롭드릴링 시작점 */}
+        <Router toggleDark={toggleDark} mode={mode} />
         <ReactQueryDevtools />
       </ThemeProvider>
     </>
