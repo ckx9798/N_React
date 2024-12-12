@@ -6,6 +6,8 @@ import {
 } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { modeAtom } from "./routes/atom";
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -83,8 +85,7 @@ export const lightTheme: DefaultTheme = {
 };
 
 function App() {
-  const [mode, setMode] = useState(false);
-  const toggleDark = () => setMode((current) => !current);
+  const mode = useRecoilValue(modeAtom);
   return (
     <>
       {/* <ThemeProvider theme={darkTheme}> */}
@@ -93,7 +94,7 @@ function App() {
         {/* <button onClick={toggleDark}>💡 mode change</button> */}
         <GlobalStyle />
         {/* 프롭드릴링 시작점 */}
-        <Router toggleDark={toggleDark} mode={mode} />
+        <Router />
         <ReactQueryDevtools />
       </ThemeProvider>
     </>
