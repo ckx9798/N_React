@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { coinData } from "./mockData";
 import { useQuery } from "react-query";
 import { fetchCoin } from "./api";
+import { modeAtom } from "./atom";
+import { useSetRecoilState } from "recoil";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -68,13 +70,12 @@ interface ICoinsProps {
 
 export default function Coins() {
   const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoin);
-
-  console.log(data);
+  const setMode = useSetRecoilState(modeAtom);
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
-        {/* <button onClick={toggleDark}>💡 mode change</button> */}
+        <button onClick={() => setMode((prev) => !prev)}>💡 mode change</button>
       </Header>
       {isLoading ? (
         <Loading>Loading...</Loading>

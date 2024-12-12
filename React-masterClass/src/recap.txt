@@ -16,3 +16,12 @@ Recoil을 사용하면,
     - 1. key : 고유한 식별자 (이름)
     - 2. default : 기본값 (false)
 4. 원하는 곳에서 useRecoilValue 사용해서 상태를 꺼내다 쓰기
+
+
+
+6-3 Recoil 상태 변환
+=> useSetRecoilState 사용해서 상태 변환 함수 만들기
+
+기본 문법
+const setterFn = useSetRecoilState(설정한 atom);
+setterFn(변환할 값);
