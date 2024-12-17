@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import fetchTopMovies from "./api/fetch";
+import { useState, useEffect, useRef } from "react";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  const [page] = useState(1);
-  // const [pageParams, setPageParams] = useState([1]);
+  const [page, setPage] = useState(1);
+  const observerItem = useRef();
 
   const fetchMovie = async (page) => {
     if (movies.length >= page * 20) return;
@@ -18,20 +16,34 @@ function App() {
       }
     );
     const data = await response.json();
-    // setPageParams((prev) => [...prev, page]);
     setMovies((prev) => [...prev, ...data.results]);
   };
 
   useEffect(() => {
-    fetchMovie(page);
+    const observer = new IntersectionObserver((entries) => {
+      const firstEntry = entries[0];
+      if (firstEntry.isIntersecting) {
+        setPage((prevPage) => prevPage + 1);
+      } else {
+        console.log("안보임");
+      }
+    });
+    if (observerItem.current) observer.observe(observerItem.current);
+    return () => {
+      if (observerItem.current) observer.unobserve(observerItem.current);
+    };
   }, []);
+
+  useEffect(() => {
+    fetchMovie(page);
+  }, [page]);
 
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-        {movies.map((movie) => {
+        {movies.map((movie, i) => {
           return (
-            <div className="flex flex-col items-center" key={movie.id}>
+            <div className="flex flex-col items-center" key={i}>
               <div>{movie.title}</div>
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -40,6 +52,7 @@ function App() {
           );
         })}
       </div>
+      <h1 ref={observerItem}>Load more</h1>
     </div>
   );
 }
